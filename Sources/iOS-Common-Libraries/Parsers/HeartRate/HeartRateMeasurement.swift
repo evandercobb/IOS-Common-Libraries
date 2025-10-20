@@ -46,7 +46,7 @@ public struct HeartRateMeasurement {
         
         if rrIntervalStatus {
             var intervals = [TimeInterval]()
-            while reader.hasData(MemoryLayout<UInt16>.size) {
+            while reader.hasData(UInt16.self) {
                 let units = Int(try reader.read(UInt16.self))
                 intervals.append(TimeInterval(units) * 1000.0 / 1024.0)
             }

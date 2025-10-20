@@ -15,6 +15,14 @@ public class DataReader {
         self.data = data
     }
     
+    public func size() -> Int {
+        return offset
+    }
+    
+    public func hasData<T: FixedWidthInteger>(_ type: T.Type) -> Bool {
+        return offset + MemoryLayout<T>.size <= data.count
+    }
+    
     public func hasData(_ size: Int) -> Bool {
         return offset + size <= data.count
     }

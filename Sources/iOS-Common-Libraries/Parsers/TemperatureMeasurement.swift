@@ -33,8 +33,8 @@ public struct TemperatureMeasurement {
         let flagsRegister = BitField<TemperatureFlag>(featureFlags)
         
         self.temperature = Measurement<UnitTemperature>(value: Double(try reader.subdata(MemoryLayout<UInt32>.size)), unit: flagsRegister.contains(.fahrenheit) ? .fahrenheit : .celsius)
-        self.timestamp = flagsRegister.contains(.timestamp) ? try reader.readDate() : nil
-        self.location = flagsRegister.contains(.location) ? Location(rawValue: try reader.readInt(UInt8.self)) : nil
+        self.timestamp = flagsRegister.contains(.timestamp) ? try reader.read() : nil
+        self.location = flagsRegister.contains(.location) ? Location(rawValue: try reader.read(UInt8.self)) : nil
     }
 }
 

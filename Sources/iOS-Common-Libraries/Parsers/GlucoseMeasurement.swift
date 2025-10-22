@@ -32,19 +32,19 @@ public struct GlucoseMeasurement {
     public init(_ data: Data) throws {
         let reader = DataReader(data: data)
 
-        let featureFlags = UInt(try reader.read(UInt8.self))
+        let featureFlags = UInt(try reader.read() as UInt8)
         let flags = BitField<GlucoseMeasurement.Flags>(featureFlags)
         
-        self.sequenceNumber = try reader.readInt(UInt16.self)
-        self.timestamp = try reader.readDate()
+        self.sequenceNumber = try reader.read(UInt16.self)
+        self.timestamp = try reader.read()
         
         timeOffset = flags.contains(.timeOffset) ? Measurement<UnitDuration>(value: Double(try reader.read(UInt16.self)), unit: .minutes) : nil
 
         if flags.contains(.typeAndLocation) {
             if flags.contains(.concentrationUnit) {
-                measurement = Measurement<UnitConcentrationMass>(value: Double(try reader.readSFloat()), unit: .millimolesPerLiter(withGramsPerMole: .bloodGramsPerMole))
+                measurement = Measurement<UnitConcentrationMass>(value: try reader.read(), unit: .millimolesPerLiter(withGramsPerMole: .bloodGramsPerMole))
             } else {
-                measurement = Measurement<UnitConcentrationMass>(value: Double(try reader.readSFloat()), unit: .milligramsPerDeciliter)
+                measurement = Measurement<UnitConcentrationMass>(value: try reader.read(), unit: .milligramsPerDeciliter)
             }
         } else {
             measurement = nil

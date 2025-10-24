@@ -63,7 +63,7 @@ public extension View {
         #endif
     }
     
-    func setupNavBarBackground(with color: Color) -> some View {
+    func setupNavBarBackground() -> some View {
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             let navigationBar = UINavigationBar.appearance()
@@ -92,7 +92,7 @@ public extension View {
                 navigationBar.tintColor = .white
                 
                 navBarAppearance.configureWithOpaqueBackground()
-                navBarAppearance.backgroundColor = UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: .black)
+                navBarAppearance.backgroundColor = UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: .systemBackground)
                 navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
                 navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
             }
@@ -108,13 +108,13 @@ public extension View {
     // MARK: - NavigationView
     
     @ViewBuilder
-    func wrapInNavigationViewForiOS(with color: Color) -> some View {
+    func wrapInNavigationViewForiOS() -> some View {
         #if os(iOS)
         NavigationView {
             self
         }
         .setSingleColumnNavigationViewStyle()
-        .setupNavBarBackground(with: color)
+        .setupNavBarBackground()
         .accentColor(.white)
         #else
         self

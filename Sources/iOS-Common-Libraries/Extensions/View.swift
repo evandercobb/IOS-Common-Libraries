@@ -55,6 +55,7 @@ public extension View {
     
     // MARK: - NavBar
     
+    @available(iOS 14.0, macCatalyst 14.0, macOS 11.0, *)
     func setTitle(_ title: String) -> some View {
         #if os(iOS)
         return navigationBarTitle(title, displayMode: .inline)
@@ -67,11 +68,13 @@ public extension View {
         #if os(iOS)
         let appearance = UINavigationBarAppearance()
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white
+           .foregroundColor: UIColor.white
         ]
         appearance.titleTextAttributes = attributes
         appearance.largeTitleTextAttributes = attributes
-        appearance.backgroundColor = color.uiColor // Dynamic Color.
+        if #available(iOS 14.0, macCatalyst 14.0, *) {
+            appearance.backgroundColor = color.uiColor // Dynamic Color.
+        }
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
@@ -83,28 +86,28 @@ public extension View {
         #if os(iOS)
         let navBarAppearance = UINavigationBarAppearance()
         let navigationBar = UINavigationBar.appearance()
-        
+
         navigationBar.barStyle = .default
-        
+
         navigationBar.isTranslucent = true
         navigationBar.prefersLargeTitles = true
         navigationBar.tintColor = UIColor(.nordicBlue)
-        
+
         navBarAppearance.configureWithTransparentBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)]
-        
+
         navigationBar.compactAppearance = navBarAppearance
         navigationBar.standardAppearance = navBarAppearance
         navigationBar.scrollEdgeAppearance = navBarAppearance
-        
+
         return self.tint(Color(UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)))
             .setAccent(Color(UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)))
         #else
         self
         #endif
     }
-    
+
     // MARK: - NavigationView
     
     @ViewBuilder
@@ -172,6 +175,7 @@ private struct OnceOnly: ViewModifier {
 
 // MARK: - taskOnce()
 
+@available(iOS 15.0, macCatalyst 15.0, macOS 12.0, *)
 public extension View {
     
     func taskOnce(_ asyncAction: @escaping () async -> Void) -> some View {
@@ -179,6 +183,7 @@ public extension View {
     }
 }
 
+@available(iOS 15.0, macCatalyst 15.0, macOS 12.0, *)
 private struct TaskOnceOnly: ViewModifier {
     
     @State private var doneAlready = false
@@ -196,6 +201,7 @@ private struct TaskOnceOnly: ViewModifier {
 
 // MARK: - Picker
 
+@available(iOS 14.0, macCatalyst 14.0, macOS 11.0, *)
 public extension Picker {
     
     @ViewBuilder

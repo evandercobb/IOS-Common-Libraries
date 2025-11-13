@@ -86,23 +86,27 @@ public extension View {
         #if os(iOS)
         let navBarAppearance = UINavigationBarAppearance()
         let navigationBar = UINavigationBar.appearance()
-
+        
         navigationBar.barStyle = .default
-
+        
         navigationBar.isTranslucent = true
         navigationBar.prefersLargeTitles = true
-        navigationBar.tintColor = UIColor(.nordicBlue)
-
+        
         navBarAppearance.configureWithTransparentBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)]
-
+        
         navigationBar.compactAppearance = navBarAppearance
         navigationBar.standardAppearance = navBarAppearance
         navigationBar.scrollEdgeAppearance = navBarAppearance
-
-        return self.tint(Color(UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)))
-            .setAccent(Color(UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)))
+        
+        if #unavailable(iOS 26.0) {
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)]
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)]
+            navigationBar.tintColor = UIColor(.nordicBlue)
+            
+            return self.tint(Color(UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)))
+                .setAccent(Color(UIColor.dynamicColor(light: UIColor(.nordicBlue), dark: UIColor.white)))
+        }
+        return self
         #else
         self
         #endif
